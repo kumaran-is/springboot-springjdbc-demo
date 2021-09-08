@@ -43,7 +43,7 @@ public class StudentDAO implements DAO<Student> {
 	
     @Override
     public void create(Student student) {
-        String sql = "insert into student(name, email, dob) values(?,?,?)";
+        String sql = "INSERT INTO student(name, email, dob) VALUES(?,?,?)";
         int insert = jdbcTemplate.update(sql,student.getName(), student.getEmail(), student.getDob());
         if(insert == 1) {
            log.info("New Student Created: " + student.getName());
@@ -94,6 +94,15 @@ public class StudentDAO implements DAO<Student> {
         }
         
         return Optional.ofNullable(student);
+    	
+    }
+    
+    @Override
+    public boolean isEmailTaken(String email) {
+    	
+    	String sql = "SELECT EXISTS (SELECT 1 FROM student WHERE email = ?)";
+    	
+    	return jdbcTemplate.queryForObject(sql, (resultSet, i) -> resultSet.getBoolean(1), new Object[] { email });
     	
     }
 

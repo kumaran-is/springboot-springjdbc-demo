@@ -25,11 +25,15 @@ public class StudentService {
 	
 	public void addNewStudent(Student student) {
 		
-		Optional<Student>  studentOptional = dao.findByEmail(student.getEmail());
+		/*Optional<Student>  studentOptional = dao.findByEmail(student.getEmail());
 		
 		if(studentOptional.isPresent()) {
 			throw new IllegalStateException("Email " + student.getEmail() + " taken");
-		}
+		} */
+		
+		if(dao.isEmailTaken(student.getEmail())) {
+			throw new IllegalStateException("Email " + student.getEmail() + " taken");
+		} 
 		
 		dao.create(student);
 	}

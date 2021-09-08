@@ -15,5 +15,7 @@ public interface DAO<T> {
     void delete(Long id);
     
     Optional<T> findByEmail(String email);
+    
+    boolean isEmailTaken(String email);
 
 }
