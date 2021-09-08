@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.college.demo.APIRequestException;
 import com.college.demo.EmailValidator;
@@ -61,7 +62,7 @@ public class StudentService {
 		dao.delete(id);
 	}
 	
-
+	@Transactional
 	 public void updateStudent(Long id, String name, String email) { 
 		
 		Student student = dao.findById(id)
