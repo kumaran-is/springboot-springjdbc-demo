@@ -63,12 +63,13 @@ public class StudentDAO {
         }
     }
     
-    public Optional<Student> get(int id) {
+    public Optional<Student> findById(Long id) {
         String sql = "SELECT id, name, email, dob FROM student WHERE id = ?";
         Student student = null;
         try {
         	student = jdbcTemplate.queryForObject(sql, rowMapper, new Object[] { id });
         } catch (DataAccessException ex) {
+        	System.out.println(" Inside DAO DataAccessException >>>> " + ex);
            //  log.info("Student not found: " + id);
         }
         return Optional.ofNullable(student);

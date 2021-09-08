@@ -36,10 +36,10 @@ public class StudentService {
 	
 	public void deleteStudent(Long id) { 
 		
-		/*boolean exists = studentDAO.existsById(id);
-		if(!exists) {
+		Optional<Student>  studentOptional  = studentDAO.findById(id);
+		if(!studentOptional.isPresent()) {
 			throw new IllegalStateException("Student with id " + id + " does not exists");
-		} */
+		} 
 		
 		studentDAO.delete(id);
 	}
