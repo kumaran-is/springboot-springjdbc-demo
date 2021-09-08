@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class StudentDAO {
+public class StudentDAO implements DAO<Student> {
 	private static final Logger log = LoggerFactory.getLogger(StudentDAO.class);
 	private final JdbcTemplate jdbcTemplate;
 	
@@ -20,7 +20,8 @@ public class StudentDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 	
-	List<Student> findAll() {
+	@Override
+	public List<Student> findAll() {
 		 String sql = "SELECT id, name, email, dob FROM student";
 
 	     return jdbcTemplate.query(sql, rowMapper);
@@ -40,6 +41,7 @@ public class StudentDAO {
         );
     };
 	
+    @Override
     public void create(Student student) {
         String sql = "insert into student(name, email, dob) values(?,?,?)";
         int insert = jdbcTemplate.update(sql,student.getName(), student.getEmail(), student.getDob());
@@ -48,6 +50,8 @@ public class StudentDAO {
         }
     }
     
+
+	@Override
     public void update(Student student, Long id) {
         String sql = "update student set name = ?, email = ? where id = ?";
         int update = jdbcTemplate.update(sql, student.getName(), student.getEmail(), id);
@@ -56,7 +60,9 @@ public class StudentDAO {
         }
     }
     
-    public void delete( Long id) {
+
+	@Override
+    public void delete(Long id) {
         String sql = "delete from student where id = ?";
         int delete = jdbcTemplate.update(sql,id);
         if(delete == 1) {
@@ -64,6 +70,7 @@ public class StudentDAO {
         }
     }
     
+    @Override
     public Optional<Student> findById(Long id) {
         String sql = "SELECT id, name, email, dob FROM student WHERE id = ?";
         Student student = null;
@@ -75,7 +82,8 @@ public class StudentDAO {
         return Optional.ofNullable(student);
     } 
     
-    public Optional<Student> findStudentByEmail(String email) {
+    @Override
+    public Optional<Student> findByEmail(String email) {
     	
     	String sql = "SELECT id, name, email, dob FROM student WHERE email = ?";
         Student student = null;

@@ -11,43 +11,43 @@ import org.springframework.stereotype.Service;
 @Service
 public class StudentService {
 	
-	private final StudentDAO studentDAO;
+	private final DAO<Student> dao;
 	
 	@Autowired
-	public StudentService(StudentDAO studentDAO) {
-		this.studentDAO = studentDAO;
+	public StudentService(DAO<Student> dao) {
+		this.dao = dao;
 	}
 	
 	public List<Student> getStudents() {
 		
-		return (List<Student>) studentDAO.findAll();
+		return (List<Student>)dao.findAll();
 	}
 	
 	public void addNewStudent(Student student) {
 		
-		Optional<Student>  studentOptional = studentDAO.findStudentByEmail(student.getEmail());
+		Optional<Student>  studentOptional = dao.findByEmail(student.getEmail());
 		
 		if(studentOptional.isPresent()) {
 			throw new IllegalStateException("Email " + student.getEmail() + " taken");
 		}
 		
-		studentDAO.create(student);
+		dao.create(student);
 	}
 	
 	public void deleteStudent(Long id) { 
 		
-		Optional<Student>  studentOptional  = studentDAO.findById(id);
+		Optional<Student>  studentOptional  = dao.findById(id);
 		if(!studentOptional.isPresent()) {
 			throw new IllegalStateException("Student with id " + id + " does not exists");
 		} 
 		
-		studentDAO.delete(id);
+		dao.delete(id);
 	}
 	
 
 	 public void updateStudent(Long id, String name, String email) { 
 		
-		Student student = studentDAO.findById(id)
+		Student student = dao.findById(id)
 				.orElseThrow(() -> new IllegalStateException("Student with id " + id + " does not exists"));
 		
 		if(name != null && name.length() > 0 && !Objects.equals(student.getName(),  name)) {
@@ -58,7 +58,7 @@ public class StudentService {
 			student.setEmail(email);
 		}
 		
-		studentDAO.update(student, id);
+		dao.update(student, id);
 	} 
 
 }
