@@ -64,7 +64,7 @@ public class StudentDAO {
     }
     
     public Optional<Student> get(int id) {
-        String sql = "SELECT name, email, dob FROM student WHERE id = ?";
+        String sql = "SELECT id, name, email, dob FROM student WHERE id = ?";
         Student student = null;
         try {
         	student = jdbcTemplate.queryForObject(sql, rowMapper, new Object[] { id });
@@ -72,6 +72,21 @@ public class StudentDAO {
            //  log.info("Student not found: " + id);
         }
         return Optional.ofNullable(student);
-    }  
+    } 
+    
+    public Optional<Student> findStudentByEmail(String email) {
+    	
+    	String sql = "SELECT id, name, email, dob FROM student WHERE email = ?";
+        Student student = null;
+        try {
+        	student = jdbcTemplate.queryForObject(sql, rowMapper, new Object[] { email });
+        } catch (DataAccessException ex) {
+        	System.out.println(" Inside DAO DataAccessException >>>> " + ex);
+           //  log.info("Student not found: " + id);
+        }
+        
+        return Optional.ofNullable(student);
+    	
+    }
 
 }

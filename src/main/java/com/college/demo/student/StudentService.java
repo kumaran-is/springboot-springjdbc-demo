@@ -25,11 +25,11 @@ public class StudentService {
 	
 	public void addNewStudent(Student student) {
 		
-		/*Optional<Student>  studentOptional = studentDAO.findStudentByEmail(student.getEmail());
+		Optional<Student>  studentOptional = studentDAO.findStudentByEmail(student.getEmail());
 		
 		if(studentOptional.isPresent()) {
-			throw new IllegalStateException("Email taken");
-		} */
+			throw new IllegalStateException("Email " + student.getEmail() + " taken");
+		}
 		
 		studentDAO.create(student);
 	}
