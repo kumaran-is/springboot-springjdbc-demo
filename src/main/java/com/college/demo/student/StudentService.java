@@ -45,18 +45,20 @@ public class StudentService {
 	}
 	
 
-	/* public void updateStudent(Long id, String name, String email) { 
+	 public void updateStudent(Long id, String name, String email) { 
 		
 		Student student = studentDAO.findById(id)
 				.orElseThrow(() -> new IllegalStateException("Student with id " + id + " does not exists"));
 		
 		if(name != null && name.length() > 0 && !Objects.equals(student.getName(),  name)) {
-			studentDAO.updateByName(id, name);
+			student.setName(name);
 		}
 		
 		if(email != null && email.length() > 0 && !Objects.equals(student.getEmail(),  email)) {
-			studentDAO.updateByEmail(id, email);;
+			student.setEmail(email);
 		}
-	} */
+		
+		studentDAO.update(student, id);
+	} 
 
 }
