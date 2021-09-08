@@ -2,7 +2,8 @@ package com.college.demo.student;
 
 import java.util.List;
 import java.util.Optional;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class StudentDAO {
-	
+	private static final Logger log = LoggerFactory.getLogger(StudentDAO.class);
 	private final JdbcTemplate jdbcTemplate;
 	
 	@Autowired
@@ -43,7 +44,7 @@ public class StudentDAO {
         String sql = "insert into student(name, email, dob) values(?,?,?)";
         int insert = jdbcTemplate.update(sql,student.getName(), student.getEmail(), student.getDob());
         if(insert == 1) {
-           //  log.info("New Student Created: " + student.getName());
+           log.info("New Student Created: " + student.getName());
         }
     }
     
@@ -51,7 +52,7 @@ public class StudentDAO {
         String sql = "update student set name = ?, email = ? where id = ?";
         int update = jdbcTemplate.update(sql, student.getName(), student.getEmail(), id);
         if(update == 1) {
-           // log.info("Student Updated: " + student.getName());
+           log.info("Student Updated: " + student.getName());
         }
     }
     
@@ -59,7 +60,7 @@ public class StudentDAO {
         String sql = "delete from student where id = ?";
         int delete = jdbcTemplate.update(sql,id);
         if(delete == 1) {
-            // log.info("Student Deleted: " + id);
+            log.info("Student Deleted: " + id);
         }
     }
     
@@ -69,8 +70,7 @@ public class StudentDAO {
         try {
         	student = jdbcTemplate.queryForObject(sql, rowMapper, new Object[] { id });
         } catch (DataAccessException ex) {
-        	System.out.println(" Inside DAO DataAccessException >>>> " + ex);
-           //  log.info("Student not found: " + id);
+           log.error("Student not found for given id: " + id);
         }
         return Optional.ofNullable(student);
     } 
@@ -82,8 +82,7 @@ public class StudentDAO {
         try {
         	student = jdbcTemplate.queryForObject(sql, rowMapper, new Object[] { email });
         } catch (DataAccessException ex) {
-        	System.out.println(" Inside DAO DataAccessException >>>> " + ex);
-           //  log.info("Student not found: " + id);
+        	log.error("Student not found for given email: " + email);
         }
         
         return Optional.ofNullable(student);
