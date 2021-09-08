@@ -8,15 +8,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.util.ObjectUtils;
 
+import com.college.demo.APIRequestException;
+import com.college.demo.EmailValidator;
+
 
 @Service
 public class StudentService {
 	
 	private final DAO<Student> dao;
+	private final EmailValidator emailValidator;
 	
 	@Autowired
-	public StudentService(DAO<Student> dao) {
+	public StudentService(
+		DAO<Student> dao,
+		EmailValidator emailValidator
+	) {
 		this.dao = dao;
+		this.emailValidator = emailValidator;
 	}
 	
 	public List<Student> getStudents() {
@@ -32,8 +40,12 @@ public class StudentService {
 			throw new IllegalStateException("Email " + student.getEmail() + " taken");
 		} */
 		
+		if (!emailValidator.test(student.getEmail())) {
+            throw new APIRequestException(student.getEmail() + " is not valid");
+        }
+		
 		if(dao.isEmailTaken(student.getEmail())) {
-			throw new IllegalStateException("Email " + student.getEmail() + " taken");
+			throw new APIRequestException("Email " + student.getEmail() + " taken");
 		} 
 		
 		dao.create(student);
@@ -43,7 +55,7 @@ public class StudentService {
 		
 		Optional<Student>  studentOptional  = dao.findById(id);
 		if(!studentOptional.isPresent()) {
-			throw new IllegalStateException("Student with id " + id + " does not exists");
+			throw new APIRequestException("Student with id " + id + " does not exists");
 		} 
 		
 		dao.delete(id);
@@ -53,7 +65,7 @@ public class StudentService {
 	 public void updateStudent(Long id, String name, String email) { 
 		
 		Student student = dao.findById(id)
-				.orElseThrow(() -> new IllegalStateException("Student with id " + id + " does not exists"));
+				.orElseThrow(() -> new APIRequestException("Student with id " + id + " does not exists"));
 
 		
 		/*if(name != null && name.length() > 0 && !Objects.equals(student.getName(),  name)) {
