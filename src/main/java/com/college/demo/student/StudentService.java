@@ -1,11 +1,12 @@
 package com.college.demo.student;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
 
 
 @Service
@@ -53,14 +54,26 @@ public class StudentService {
 		
 		Student student = dao.findById(id)
 				.orElseThrow(() -> new IllegalStateException("Student with id " + id + " does not exists"));
+
 		
-		if(name != null && name.length() > 0 && !Objects.equals(student.getName(),  name)) {
+		/*if(name != null && name.length() > 0 && !Objects.equals(student.getName(),  name)) {
 			student.setName(name);
-		}
+		} */
 		
-		if(email != null && email.length() > 0 && !Objects.equals(student.getEmail(),  email)) {
+		Optional.ofNullable(name)
+                .filter(studentName -> !ObjectUtils.isEmpty(studentName))
+                .map(StringUtils::capitalize)
+                .ifPresent(studentName -> student.setName(studentName));
+		
+		/*if(email != null && email.length() > 0 && !Objects.equals(student.getEmail(),  email)) {
 			student.setEmail(email);
 		}
+		*/
+		
+		Optional.ofNullable(email)
+        .filter(studentEmail -> !ObjectUtils.isEmpty(studentEmail))
+        .map(StringUtils::capitalize)
+        .ifPresent(studentEmail -> student.setEmail(studentEmail));
 		
 		dao.update(student, id);
 	} 
