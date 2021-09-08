@@ -16,13 +16,11 @@ public class Student {
 		super();
 	}
 	
-	public Student(String name, String email, LocalDate dob, Integer age) {
-		super();
-		this.name = name;
-		this.email = email;
-		this.dob = dob;
-		this.age = age;
-	}
+	/*
+	 * public Student(String name, String email, LocalDate dob, Integer age) {
+	 * super(); this.name = name; this.email = email; this.dob = dob; this.age =
+	 * age; }
+	 */
 
 	public Student(Long id, String name, String email, LocalDate dob) {
 		super();
@@ -31,6 +29,11 @@ public class Student {
 		this.email = email;
 		this.dob = dob;
 	}
+	
+	public Long getId() {
+		return id;
+	}
+
 
 	public Integer getAge() {
 		return Period.between(dob, LocalDate.now()).getYears();

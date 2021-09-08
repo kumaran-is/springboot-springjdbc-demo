@@ -20,7 +20,7 @@ public class StudentDAO {
     }
 	
 	List<Student> findAll() {
-		 String sql = "SELECT name, email, dob FROM student";
+		 String sql = "SELECT id, name, email, dob FROM student";
 
 	     return jdbcTemplate.query(sql, rowMapper);
 	}

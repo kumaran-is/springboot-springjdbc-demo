@@ -25,27 +25,27 @@ public class StudentService {
 	
 	public void addNewStudent(Student student) {
 		
-		Optional<Student>  studentOptional = studentDAO.findStudentByEmail(student.getEmail());
+		/*Optional<Student>  studentOptional = studentDAO.findStudentByEmail(student.getEmail());
 		
 		if(studentOptional.isPresent()) {
 			throw new IllegalStateException("Email taken");
-		}
+		} */
 		
-		studentDAO.save(student);
+		studentDAO.create(student);
 	}
 	
 	public void deleteStudent(Long id) { 
 		
-		boolean exists = studentDAO.existsById(id);
+		/*boolean exists = studentDAO.existsById(id);
 		if(!exists) {
 			throw new IllegalStateException("Student with id " + id + " does not exists");
-		}
+		} */
 		
-		studentDAO.deleteById(id);
+		studentDAO.delete(id);
 	}
 	
-	@Transactional
-	public void updateStudent(Long id, String name, String email) { 
+
+	/* public void updateStudent(Long id, String name, String email) { 
 		
 		Student student = studentDAO.findById(id)
 				.orElseThrow(() -> new IllegalStateException("Student with id " + id + " does not exists"));
@@ -57,6 +57,6 @@ public class StudentService {
 		if(email != null && email.length() > 0 && !Objects.equals(student.getEmail(),  email)) {
 			studentDAO.updateByEmail(id, email);;
 		}
-	}
+	} */
 
 }
