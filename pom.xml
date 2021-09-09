@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.college</groupId>
 	<artifactId>springboot-springjdbc-demo</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2</version>
 	<name>springboot-springjdbc-demo</name>
 	<description>Demo project for Spring Boot using SpringDBC</description>
 	<properties>
